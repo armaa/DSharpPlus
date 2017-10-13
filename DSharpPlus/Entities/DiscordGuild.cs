@@ -16,6 +16,24 @@ namespace DSharpPlus.Entities
     /// </summary>
     public class DiscordGuild : SnowflakeObject, IEquatable<DiscordGuild>
     {
+        private static Dictionary<string, string> GuildRegionNames = new Dictionary<string, string>()
+        {
+            ["amsterdam"] = "Amsterdam",
+            ["brazil"] = "Brazil",
+            ["eu-central"] = "Central Europe",
+            ["eu-west"] = "Western Europe",
+            ["frankfurt"] = "Frankfurt",
+            ["hongkong"] = "Hong Kong",
+            ["london"] = "London",
+            ["russia"] = "Russia",
+            ["singapore"] = "Singapore",
+            ["sydney"] = "Sydney",
+            ["us-central"] = "US Central",
+            ["us-east"] = "US East",
+            ["us-south"] = "US South",
+            ["us-west"] = "US West"
+        };
+
         /// <summary>
         /// Gets the guild's name.
         /// </summary>
@@ -432,6 +450,14 @@ namespace DSharpPlus.Entities
         /// <returns>Voice regions available for this guild.</returns>
         public Task<IReadOnlyList<DiscordVoiceRegion>> GetVoiceRegionsAsync() =>
             this.Discord.ApiClient.GetGuildVoiceRegionsAsync(this.Id);
+
+        public string GetRegionName()
+        {
+            if (GuildRegionNames.ContainsKey(this.RegionId))
+                return GuildRegionNames.FirstOrDefault(xkvp => xkvp.Key == this.RegionId).Value;
+
+            return "No region available";
+        }
 
         /// <summary>
         /// Gets all the invites created for all the channels in this guild.
